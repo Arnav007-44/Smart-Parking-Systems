@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+<main class="page wide">
+  <h1>Parking analytics</h1>
+  <p class="muted">Live numbers from the MySQL database. Charts cover the last 30 days unless stated.</p>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="charts">
+    <article class="card span2">
+      <h2>Peak hours</h2>
+      <p class="muted">Average bookings started in each hour of the day</p>
+      <div class="chart"><canvas id="peak"></canvas></div>
+    </article>
+    <article class="card span2">
+      <h2>Daily revenue</h2>
+      <p class="muted">Revenue per day with a 7-day moving average (₹)</p>
+      <div class="chart"><canvas id="trend"></canvas></div>
+    </article>
+    <article class="card">
+      <h2>Top 10 lots by revenue</h2>
+      <p class="muted">Last 30 days (₹)</p>
+      <div class="chart tall"><canvas id="revLot"></canvas></div>
+    </article>
+    <article class="card">
+      <h2>Busiest lots right now</h2>
+      <p class="muted">Share of slots occupied at this moment (%)</p>
+      <div class="chart tall"><canvas id="occ"></canvas></div>
+    </article>
+    <article class="card">
+      <h2>Bookings by day of week</h2>
+      <p class="muted">Average bookings per day, last 4 weeks</p>
+      <div class="chart short"><canvas id="week"></canvas></div>
+    </article>
+    <article class="card">
+      <h2>Vehicle type and payment method</h2>
+      <p class="muted">Number of bookings and payments</p>
+      <div class="chart short split">
+        <div><canvas id="mix"></canvas></div>
+        <div><canvas id="pay"></canvas></div>
+      </div>
+    </article>
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='vendor/chart.umd.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

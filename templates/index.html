@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Find Parking{% endblock %}
+{% block body_class %}map-page{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="finder">
+  <aside class="panel">
+    <div class="panel-head">
+      <h1>Where are you parking?</h1>
+      <p>Click the map, pick an area, or use your location. The nearest lots show up first.</p>
+      <div class="row">
+        <select id="area" aria-label="Area"></select>
+        <button id="locate" class="btn btn-light" type="button">Use my location</button>
+      </div>
+      <div class="seg" role="group" aria-label="Vehicle type">
+        <button type="button" data-type="car" class="on">Car</button>
+        <button type="button" data-type="bike">Bike</button>
+        <button type="button" data-type="ev">EV charging</button>
+      </div>
+      <div class="row filters">
+        <label>Within
+          <select id="radius">
+            <option value="2">2 km</option>
+            <option value="5" selected>5 km</option>
+            <option value="10">10 km</option>
+            <option value="40">Whole city</option>
+          </select>
+        </label>
+        <label>Max price
+          <select id="maxPrice">
+            <option value="0" selected>Any</option>
+            <option value="30">₹30/hr</option>
+            <option value="50">₹50/hr</option>
+            <option value="70">₹70/hr</option>
+          </select>
+        </label>
+      </div>
+      <div class="row checks">
+        <label><input type="checkbox" id="availableOnly"> Free slots only</label>
+        <label><input type="checkbox" id="covered"> Covered only</label>
+      </div>
+    </div>
+    <div class="result-head">
+      <strong id="count">Loading...</strong>
+      <span class="legend">Number on each pin = free slots.
+        <i class="dot good"></i>Free<i class="dot warn"></i>Filling up<i class="dot full"></i>Full
+      </span>
+    </div>
+    <ul id="lots" class="lots"></ul>
+  </aside>
+  <div id="map" aria-label="Map of parking lots"></div>
+</main>
+
+<!-- Booking window -->
+<div id="modal" class="modal" hidden>
+  <form id="bookForm" class="modal-card">
+    <button type="button" class="close" id="closeModal" aria-label="Close">&times;</button>
+    <h2 id="mName"></h2>
+    <p id="mInfo" class="muted"></p>
+    <label>Your name <input name="customer_name" required minlength="2" maxlength="80" placeholder="Full name"></label>
+    <label>Vehicle number <input name="vehicle_number" required placeholder="MH02AB1234"></label>
+    <label>How many hours?
+      <select name="hours">
+        <option>1</option><option selected>2</option><option>3</option><option>4</option>
+        <option>6</option><option>8</option><option>12</option><option>24</option>
+      </select>
+    </label>
+    <p class="estimate">Estimated cost <strong id="mCost"></strong></p>
+    <button class="btn btn-primary" type="submit">Book slot</button>
+    <div id="mResult" class="ticket" hidden></div>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}

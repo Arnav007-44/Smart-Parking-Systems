@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+<main class="page">
+  <h1>My bookings</h1>
+  <p class="muted">Enter your vehicle number to see your bookings and check out when you leave.</p>
+  <form id="searchForm" class="row search">
+    <input id="vehicle" placeholder="MH02AB1234" required aria-label="Vehicle number">
+    <button class="btn btn-primary" type="submit">Search</button>
+  </form>
+  <div id="results"></div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/bookings.js') }}"></script>
+{% endblock %}
